@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Button, DecorContainer, Input } from "@components";
 import { Brush, Rect, Circle, Eraser, Line } from "@tools";
 
@@ -13,7 +11,6 @@ export const Toolbar = () => {
     {
       type: "button",
       drawingMode: "brush",
-      // onClick: () => toolState.setTool(new Brush(canvasState.canvas, canvasState.socket, canvasState.sessionid)),
       onClick: () => {
         if (canvasState.canvas) {
           toolState.setTool(new Brush(canvasState.canvas));
@@ -27,7 +24,6 @@ export const Toolbar = () => {
     {
       type: "button",
       drawingMode: "rect",
-      // onClick: () => toolState.setTool(new Rect(canvasState.canvas, canvasState.socket, canvasState.sessionid)),
       onClick: () => {
         if (canvasState.canvas) {
           toolState.setTool(new Rect(canvasState.canvas));
@@ -39,7 +35,6 @@ export const Toolbar = () => {
     {
       type: "button",
       drawingMode: "circle",
-      // onClick: () => toolState.setTool(new Circle(canvasState.canvas)),
       onClick: () => {
         if (canvasState.canvas) {
           toolState.setTool(new Circle(canvasState.canvas));
@@ -53,7 +48,6 @@ export const Toolbar = () => {
     {
       type: "button",
       drawingMode: "eraser",
-      // onClick: () => toolState.setTool(new Eraser(canvasState.canvas)),
       onClick: () => {
         if (canvasState.canvas) {
           toolState.setTool(new Eraser(canvasState.canvas));
@@ -67,7 +61,6 @@ export const Toolbar = () => {
     {
       type: "button",
       drawingMode: "line",
-      // onClick: () => toolState.setTool(new Line(canvasState.canvas)),
       onClick: () => {
         if (canvasState.canvas) {
           toolState.setTool(new Line(canvasState.canvas));
@@ -82,23 +75,20 @@ export const Toolbar = () => {
     {
       type: "button",
       drawingMode: "undo",
-      // onClick: () => canvasState.undo(),
+      onClick: () => canvasState.undo(),
     },
     {
       type: "button",
       drawingMode: "redo",
-      // onClick: () => canvasState.redo(),
+      onClick: () => canvasState.redo(),
     },
     {
       type: "button",
       drawingMode: "save",
-      // onClick: () => download(),
+      onClick: () => console.log('сохранить'),
     },
   ];
 
-  const plug = () => {
-    console.log("object");
-  };
   return (
     <div className={styles.toolbar}>
       <DecorContainer>
@@ -108,12 +98,13 @@ export const Toolbar = () => {
               <Button
                 key={index}
                 drawingMode={item.drawingMode ?? ""}
-                onClick={item.onClick ?? plug}
+                onClick={item.onClick}
               />
             );
           } else if (item.type === "input") {
             return (
               <Input
+                key={index}
                 className={styles.input}
                 onChange={e => {
                   toolState.setStrokeColor(e.target.value);

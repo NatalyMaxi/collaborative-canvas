@@ -18,9 +18,19 @@ const CanvasComponent = () => {
     }
   }, []);
 
+  
+  const mouseDownHandler = () => {
+    if (canvasRef.current) {
+        canvasState.pushToUndo(canvasRef.current.toDataURL())
+      }
+        
+        // axios.post(`http://localhost:5000/image?id=${params.id}`, {img: canvasRef.current.toDataURL()})
+        //     .then(response => console.log(response.data))
+    }
+
   return (
     <div className={styles.canvas}>
-      <canvas ref={canvasRef} width={900} height={600}></canvas>
+      <canvas ref={canvasRef} onMouseDown={()=> mouseDownHandler()} width={900} height={600}></canvas>
     </div>
   );
 };
