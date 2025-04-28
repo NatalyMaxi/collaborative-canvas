@@ -22,6 +22,7 @@
     "baseUrl": ".",
     "paths": {
       "@components": ["src/components"],
+      "@tools": ["src/tools"],
     }
   },
   "include": [

@@ -3,9 +3,9 @@ import { Toolbar, Canvas, SettingBar } from "@components";
 
 function App() {
   return (
-    <div className={styles.App}>
-      <SettingBar />
+    <div className={styles.app}>
       <Toolbar />
+      <SettingBar />
       <Canvas />
     </div>
   );
