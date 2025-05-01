@@ -1,4 +1,4 @@
-import { Button, DecorContainer, Input } from "@components";
+import { DrawingToolButton, DecorContainer, Input } from "@components";
 import { Brush, Rect, Circle, Eraser, Line } from "@tools";
 
 import canvasState from "src/store/canvasState";
@@ -95,7 +95,8 @@ export const Toolbar = () => {
         {DrawingTools.map((item, index) => {
           if (item.type === "button") {
             return (
-              <Button
+              <DrawingToolButton
+                type={item.type}
                 key={index}
                 drawingMode={item.drawingMode ?? ""}
                 onClick={item.onClick}
