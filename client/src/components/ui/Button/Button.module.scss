@@ -1,0 +1,18 @@
+@import "../../../styles/variables.scss";
+
+.button {
+  border: none;
+  background-color: $main-background;
+  width: max-content;
+  padding: 5px 30px;
+  cursor: pointer;
+  transition: all 0.2s linear;
+
+  &:hover {
+    box-shadow: 1px 3px 4px gray;
+  }
+
+  .textButton {
+    font-size: 14px;
+  }
+}

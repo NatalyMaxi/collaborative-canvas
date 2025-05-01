@@ -20,8 +20,7 @@
 }
 
 .modalHeader {
-  padding: 1rem;
-  border-bottom: 1px solid #dee2e6;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,16 +28,25 @@
 
 .modalTitle {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 22px;
+  font-weight: 500;
 }
 
 .closeButton {
   background-color: transparent;
   border: none;
-  font-size: 1.5rem;
+  font-size: 30px;
   cursor: pointer;
+  transition: all 0.2s linear;
+
+  &:hover {
+    scale: 1.2;
+  }
 }
 
 .modalBody {
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
 }

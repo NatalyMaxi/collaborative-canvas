@@ -85,7 +85,7 @@ export const Toolbar = () => {
     {
       type: "button",
       drawingMode: "save",
-      onClick: () => console.log('сохранить'),
+      onClick: () => console.log("сохранить"),
     },
   ];
 
