@@ -1,20 +1,15 @@
 export class Tool {
   canvas: HTMLCanvasElement;
-  // socket: WebSocket;
-  // id: string;
+  socket: WebSocket;
+  id: string;
   ctx: CanvasRenderingContext2D;
 
-  // constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-  //   this.canvas = canvas;
-  //   this.socket = socket;
-  //   this.id = id;
-  //   this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-  //   this.destroyEvents(); // при выборе другого инструмента мы уничтожаем слушатели предыдущего выбра инструмента
-  // }
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
     this.canvas = canvas;
+    this.socket = socket;
+    this.id = id;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.destroyEvents(); // при выборе другого инструмента мы уничтожаем слушатели предыдущего выбра инструмента
+    this.destroyEvents();
   }
 
   set fillColor(color: string) {

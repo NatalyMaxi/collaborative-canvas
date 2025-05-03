@@ -7,11 +7,11 @@ import { BrowserRouter } from "react-router-dom";
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-      <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <App />
-      </BrowserRouter>
-    </React.StrictMode>
+    </BrowserRouter>
+  </React.StrictMode>
 );
-

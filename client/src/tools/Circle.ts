@@ -4,28 +4,21 @@ export class Circle extends Tool {
   mouseDown: boolean;
   startX: number;
   startY: number;
-  // width: number;
-  // height: number;
+  width: number;
+  height: number;
   saved: string;
 
-  // constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-  //   super(canvas, socket, id);
-  //   this.mouseDown = false;
-  //   this.startX = 0;
-  //   this.startY = 0;
-  //   this.width = 0;
-  //   this.height = 0;
-  //   this.saved = "";
-  //   this.listen();
-  // }
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+    super(canvas, socket, id);
     this.mouseDown = false;
     this.startX = 0;
     this.startY = 0;
+    this.width = 0;
+    this.height = 0;
     this.saved = "";
     this.listen();
   }
+
 
   listen() {
     this.canvas.onmousemove = this.mouseMoveHandler;
@@ -35,15 +28,15 @@ export class Circle extends Tool {
 
   mouseUpHandler = (e: MouseEvent) => {
     this.mouseDown = false;
-    // this.socket.send(
-    //   JSON.stringify({
-    //     method: "draw",
-    //     id: this.id,
-    //     figure: {
-    //       type: "finish",
-    //     },
-    //   })
-    // );
+    this.socket.send(
+      JSON.stringify({
+        method: "draw",
+        id: this.id,
+        figure: {
+          type: "finish",
+        },
+      })
+    );
   };
 
   mouseDownHandler = (e: MouseEvent) => {

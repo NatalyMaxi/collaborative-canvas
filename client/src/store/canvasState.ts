@@ -10,23 +10,23 @@ class CanvasState {
 
   constructor() {
     makeAutoObservable(this);
-  };
+  }
 
-  // setSessionId(id: string) {
-  //   this.sessionid = id;
-  // }
+  setSessionId(id: string | undefined) {
+    this.sessionid = id ?? null;
+  }
 
-  // setSocket(socket: WebSocket) {
-  //   this.socket = socket;
-  // }
+  setSocket(socket: WebSocket | null) {
+    this.socket = socket;
+  }
 
-  // setUsername(username: string) {
-  //   this.username = username;
-  // }
+  setUsername(username: string) {
+    this.username = username;
+  }
 
   setCanvas(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
-  };
+  }
 
   pushToUndo(data: string) {
     this.undoList.push(data);

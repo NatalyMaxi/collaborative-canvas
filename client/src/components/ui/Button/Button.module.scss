@@ -1,9 +1,9 @@
-@import "../../../styles/variables.scss";
+@use "../../../styles/variables.scss" as *;
 
 .button {
   border: none;
   background-color: $main-background;
-  width: max-content;
+  width: 100px;
   padding: 5px 30px;
   cursor: pointer;
   transition: all 0.2s linear;

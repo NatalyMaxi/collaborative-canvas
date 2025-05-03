@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 import { DrawingToolButton, DecorContainer, Input } from "@components";
 import { Brush, Rect, Circle, Eraser, Line } from "@tools";
 
@@ -12,8 +14,14 @@ export const Toolbar = () => {
       type: "button",
       drawingMode: "brush",
       onClick: () => {
-        if (canvasState.canvas) {
-          toolState.setTool(new Brush(canvasState.canvas));
+        if (canvasState.canvas && canvasState.sessionid && canvasState.socket) {
+          toolState.setTool(
+            new Brush(
+              canvasState.canvas,
+              canvasState.socket,
+              canvasState.sessionid
+            )
+          );
         } else {
           console.warn(
             "Canvas is not initialized yet.  Cannot set brush tool."
@@ -25,8 +33,14 @@ export const Toolbar = () => {
       type: "button",
       drawingMode: "rect",
       onClick: () => {
-        if (canvasState.canvas) {
-          toolState.setTool(new Rect(canvasState.canvas));
+        if (canvasState.canvas && canvasState.sessionid && canvasState.socket) { 
+          toolState.setTool(
+            new Rect(
+              canvasState.canvas,
+              canvasState.socket,
+              canvasState.sessionid
+            )
+          );
         } else {
           console.warn("Canvas is not initialized yet.  Cannot set rect tool.");
         }
@@ -36,8 +50,14 @@ export const Toolbar = () => {
       type: "button",
       drawingMode: "circle",
       onClick: () => {
-        if (canvasState.canvas) {
-          toolState.setTool(new Circle(canvasState.canvas));
+        if (canvasState.canvas && canvasState.sessionid && canvasState.socket) {
+          toolState.setTool(
+            new Circle(
+              canvasState.canvas,
+              canvasState.socket,
+              canvasState.sessionid
+            )
+          );
         } else {
           console.warn(
             "Canvas is not initialized yet.  Cannot set circle tool."
@@ -49,8 +69,15 @@ export const Toolbar = () => {
       type: "button",
       drawingMode: "eraser",
       onClick: () => {
-        if (canvasState.canvas) {
-          toolState.setTool(new Eraser(canvasState.canvas));
+        console.log('нажала на ластик');
+        if (canvasState.canvas && canvasState.sessionid && canvasState.socket) {
+          toolState.setTool(
+            new Eraser(
+              canvasState.canvas,
+              canvasState.socket,
+              canvasState.sessionid
+            )
+          );
         } else {
           console.warn(
             "Canvas is not initialized yet.  Cannot set eraser tool."
@@ -62,8 +89,14 @@ export const Toolbar = () => {
       type: "button",
       drawingMode: "line",
       onClick: () => {
-        if (canvasState.canvas) {
-          toolState.setTool(new Line(canvasState.canvas));
+        if (canvasState.canvas && canvasState.sessionid && canvasState.socket) {
+          toolState.setTool(
+            new Line(
+              canvasState.canvas,
+              canvasState.socket,
+              canvasState.sessionid
+            )
+          );
         } else {
           console.warn("Canvas is not initialized yet.  Cannot set line tool.");
         }
@@ -85,9 +118,38 @@ export const Toolbar = () => {
     {
       type: "button",
       drawingMode: "save",
-      onClick: () => console.log("сохранить"),
+      onClick: () => download(),
     },
   ];
+
+  const changeColor = (e: ChangeEvent<HTMLInputElement>) => {
+    toolState.setStrokeColor(e.target.value);
+    toolState.setFillColor(e.target.value);
+  };
+
+  const download = () => {
+    if (!canvasState.canvas) {
+      console.warn(
+        "Canvas не инициализирован. Невозможно скачать изображение."
+      );
+      return;
+    }
+
+    if (!canvasState.sessionid) {
+      console.warn(
+        "ID сессии не инициализирован. Невозможно скачать изображение."
+      );
+      return;
+    }
+
+    const dataUrl = canvasState.canvas.toDataURL();
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    a.download = canvasState.sessionid + ".jpg";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
 
   return (
     <div className={styles.toolbar}>
@@ -107,10 +169,7 @@ export const Toolbar = () => {
               <Input
                 key={index}
                 className={styles.input}
-                onChange={e => {
-                  toolState.setStrokeColor(e.target.value);
-                  toolState.setFillColor(e.target.value);
-                }}
+                onChange={e => changeColor(e)}
                 inputId="fill-color"
                 inputType="color"
               />

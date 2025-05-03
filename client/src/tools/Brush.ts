@@ -3,14 +3,8 @@ import { Tool } from "./Tool";
 export class Brush extends Tool {
   mouseDown: boolean;
 
-  // constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-  //   super(canvas, socket, id);
-  //   this.mouseDown = false;
-  //   this.listen();
-  // }
-
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+    super(canvas, socket, id);
     this.mouseDown = false;
     this.listen();
   }
@@ -23,15 +17,15 @@ export class Brush extends Tool {
 
   mouseUpHandler = (e: MouseEvent) => {
     this.mouseDown = false;
-    // this.socket.send(
-    //   JSON.stringify({
-    //     method: "draw",
-    //     id: this.id,
-    //     figure: {
-    //       type: "finish",
-    //     },
-    //   })
-    // );
+    this.socket.send(
+      JSON.stringify({
+        method: "draw",
+        id: this.id,
+        figure: {
+          type: "finish",
+        },
+      })
+    );
   };
 
   mouseDownHandler = (e: MouseEvent) => {
@@ -44,32 +38,30 @@ export class Brush extends Tool {
   };
 
   mouseMoveHandler = (e: MouseEvent) => {
-    if (this.mouseDown) {
-      this.draw(
-        e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
-        e.pageY - (e.target as HTMLCanvasElement).offsetTop
+    if (this.mouseDown && this.ctx) {
+      this.socket.send(
+        JSON.stringify({
+          method: "draw",
+          id: this.id,
+          figure: {
+            type: "brush",
+            x: e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
+            y: e.pageY - (e.target as HTMLCanvasElement).offsetTop,
+            color: this.ctx.strokeStyle,
+          },
+        })
       );
-      // this.socket.send(
-      //   JSON.stringify({
-      //     method: "draw",
-      //     id: this.id,
-      //     figure: {
-      //       type: "brush",
-      //       x: e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
-      //       y: e.pageY - (e.target as HTMLCanvasElement).offsetTop,
-      //     },
-      //   })
-      // );
     }
   };
 
-  draw(x: number, y: number) {
-    this.ctx.lineTo(x, y);
-    this.ctx.stroke();
+  static draw(
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    color: string
+  ) {
+    ctx.strokeStyle = color;
+    ctx.lineTo(x, y);
+    ctx.stroke();
   }
-
-  // static draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  //   ctx.lineTo(x, y);
-  //   ctx.stroke();
-  // }
 }

@@ -7,21 +7,16 @@ export class Line extends Tool {
   currentX: number;
   currentY: number;
 
-  // constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-  //   super(canvas, socket, id);
-  //   this.mouseDown = false;
-  //   this.listen();
-  // }
-
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+    super(canvas, socket, id);
     this.mouseDown = false;
-    this.name = "Line";
-    this.currentX = 0;
-    this.currentY = 0;
-    this.saved = "";
     this.listen();
+        this.name = "Line";
+        this.currentX = 0;
+        this.currentY = 0;
+        this.saved = "";
   }
+
 
   listen() {
     this.canvas.onmousemove = this.mouseMoveHandler;
@@ -31,15 +26,15 @@ export class Line extends Tool {
 
   mouseUpHandler = (e: MouseEvent) => {
     this.mouseDown = false;
-    // this.socket.send(
-    //   JSON.stringify({
-    //     method: "draw",
-    //     id: this.id,
-    //     figure: {
-    //       type: "finish",
-    //     },
-    //   })
-    // );
+    this.socket.send(
+      JSON.stringify({
+        method: "draw",
+        id: this.id,
+        figure: {
+          type: "finish",
+        },
+      })
+    );
   };
 
   mouseDownHandler = (e: MouseEvent) => {

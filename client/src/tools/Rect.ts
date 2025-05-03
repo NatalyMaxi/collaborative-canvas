@@ -4,25 +4,17 @@ export class Rect extends Tool {
   mouseDown: boolean;
   startX: number;
   startY: number;
-  // width: number;
-  // height: number;
+  width: number;
+  height: number;
   saved: string;
 
-  // constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
-  //   super(canvas, socket, id);
-  //   this.mouseDown = false;
-  //   this.startX = 0;
-  //   this.startY = 0;
-  //   this.width = 0;
-  //   this.height = 0;
-  //   this.saved = "";
-  //   this.listen();
-  // }
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
+    super(canvas, socket, id);
     this.mouseDown = false;
     this.startX = 0;
     this.startY = 0;
+    this.width = 0;
+    this.height = 0;
     this.saved = "";
     this.listen();
   }
@@ -35,15 +27,20 @@ export class Rect extends Tool {
 
   mouseUpHandler = (e: MouseEvent) => {
     this.mouseDown = false;
-    // this.socket.send(
-    //   JSON.stringify({
-    //     method: "draw",
-    //     id: this.id,
-    //     figure: {
-    //       type: "finish",
-    //     },
-    //   })
-    // );
+    this.socket.send(
+      JSON.stringify({
+        method: "draw",
+        id: this.id,
+        figure: {
+          type: "rect",
+          x: this.startX,
+          y: this.startY,
+          width: this.width,
+          height: this.height,
+          color: this.ctx.fillStyle,
+        },
+      })
+    );
   };
 
   mouseDownHandler = (e: MouseEvent) => {
@@ -58,35 +55,11 @@ export class Rect extends Tool {
     if (this.mouseDown) {
       let currentX = e.pageX - (e.target as HTMLCanvasElement).offsetLeft;
       let currentY = e.pageY - (e.target as HTMLCanvasElement).offsetTop;
-      let width = currentX - this.startX;
-      let height = currentY - this.startY;
-      this.draw(this.startX, this.startY, width, height);
-      // this.socket.send(
-      //   JSON.stringify({
-      //     method: "draw",
-      //     id: this.id,
-      //     figure: {
-      //       type: "brush",
-      //       x: e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
-      //       y: e.pageY - (e.target as HTMLCanvasElement).offsetTop,
-      //     },
-      //   })
-      // );
+      this.width = currentX - this.startX;
+      this.height = currentY - this.startY;
+      this.draw(this.startX, this.startY, this.width, this.height);
     }
   };
-
-  // draw(x: number, y: number, w: number, h: number) {
-  //   const img = new Image();
-  //   img.src = this.saved;
-  //   img.onload = () => {
-  //     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  //     this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
-  //     this.ctx.beginPath();
-  //     this.ctx.rect(x, y, w, h);
-  //     this.ctx.fill();
-  //     this.ctx.stroke();
-  //   };
-  // }
 
   draw(x: number, y: number, w: number, h: number) {
     const img = new Image();
@@ -101,18 +74,18 @@ export class Rect extends Tool {
     };
   }
 
-  // static staticDraw(
-  //   ctx: CanvasRenderingContext2D,
-  //   x: number,
-  //   y: number,
-  //   w: number,
-  //   h: number,
-  //   color: string
-  // ) {
-  //   ctx.fillStyle = color;
-  //   ctx.beginPath();
-  //   ctx.rect(x, y, w, h);
-  //   ctx.fill();
-  //   ctx.stroke();
-  // }
+  static staticDraw(
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    color: string
+  ) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.fill();
+    ctx.stroke();
+  }
 }
