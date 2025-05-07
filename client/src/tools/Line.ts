@@ -52,17 +52,6 @@ export class Line extends Tool {
         e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
         e.pageY - (e.target as HTMLCanvasElement).offsetTop
       );
-      // this.socket.send(
-      //   JSON.stringify({
-      //     method: "draw",
-      //     id: this.id,
-      //     figure: {
-      //       type: "brush",
-      //       x: e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
-      //       y: e.pageY - (e.target as HTMLCanvasElement).offsetTop,
-      //     },
-      //   })
-      // );
     }
   };
 
@@ -79,9 +68,4 @@ export class Line extends Tool {
       this.ctx.stroke();
     };
   }
-
-  // static draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  //   ctx.lineTo(x, y);
-  //   ctx.stroke();
-  // }
 }

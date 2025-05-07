@@ -72,7 +72,7 @@ const CanvasComponent = () => {
     }
   };
 
- const drawHandler = (msg: IDrawMessage) => {
+  const drawHandler = (msg: IDrawMessage) => {
     const figure = msg.figure;
     const ctx = canvasRef.current?.getContext("2d");
 
@@ -83,7 +83,8 @@ const CanvasComponent = () => {
             ctx,
             figure.x || 0,
             figure.y || 0,
-            figure.color || "black"
+            figure.color || "black",
+            figure.lineWidth || 1
           );
           break;
         case "rect":
@@ -98,7 +99,7 @@ const CanvasComponent = () => {
             figure.lineWidth || 1
           );
           break;
-        case "circle": // Добавляем обработку для круга
+        case "circle":
           Circle.staticDraw(
             ctx,
             figure.x || 0,

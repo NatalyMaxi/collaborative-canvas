@@ -4,7 +4,7 @@ export class Circle extends Tool {
   mouseDown: boolean;
   startX: number;
   startY: number;
-  radius: number; // Изменили width/height на radius
+  radius: number;
   saved: string;
 
   constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
@@ -30,7 +30,7 @@ export class Circle extends Tool {
         method: "draw",
         id: this.id,
         figure: {
-          type: "circle", // Изменили type на "circle"
+          type: "circle",
           x: this.startX,
           y: this.startY,
           r: this.radius,

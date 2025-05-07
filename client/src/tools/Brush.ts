@@ -48,6 +48,7 @@ export class Brush extends Tool {
             x: e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
             y: e.pageY - (e.target as HTMLCanvasElement).offsetTop,
             color: this.ctx.strokeStyle,
+            lineWidth: this.ctx.lineWidth,
           },
         })
       );
@@ -58,9 +59,11 @@ export class Brush extends Tool {
     ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
-    color: string
+    color: string,
+    lineWidth: number
   ) {
     ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
     ctx.lineTo(x, y);
     ctx.stroke();
   }
