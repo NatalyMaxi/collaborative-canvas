@@ -25,6 +25,8 @@ interface IDrawMessage {
     width?: number;
     height?: number;
     color?: string;
+    strokeColor?: string;
+    lineWidth?: number;
   };
 }
 
@@ -90,7 +92,9 @@ const CanvasComponent = () => {
             figure.y || 0,
             figure.width || 0,
             figure.height || 0,
-            figure.color || "black"
+            figure.color || "black",
+            figure.strokeColor || "black",
+            figure.lineWidth || 1
           );
           break;
         case "eraser":
