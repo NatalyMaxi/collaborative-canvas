@@ -3,7 +3,7 @@ import axios from "axios";
 import { observer } from "mobx-react-lite";
 
 import { Modal, Input, Button } from "@components";
-import { Brush, Eraser, Rect } from "@tools";
+import { Brush, Circle, Eraser, Rect } from "@tools";
 
 import canvasState from "src/store/canvasState";
 import toolState from "src/store/toolState";
@@ -19,9 +19,10 @@ interface IParams {
 interface IDrawMessage {
   method: "draw";
   figure: {
-    type: "brush" | "rect" | "eraser" | "finish";
+    type: "brush" | "rect" | "eraser" | "finish" | "circle";
     x?: number;
     y?: number;
+    r?: number;
     width?: number;
     height?: number;
     color?: string;
@@ -71,7 +72,7 @@ const CanvasComponent = () => {
     }
   };
 
-  const drawHandler = (msg: IDrawMessage) => {
+ const drawHandler = (msg: IDrawMessage) => {
     const figure = msg.figure;
     const ctx = canvasRef.current?.getContext("2d");
 
@@ -92,6 +93,17 @@ const CanvasComponent = () => {
             figure.y || 0,
             figure.width || 0,
             figure.height || 0,
+            figure.color || "black",
+            figure.strokeColor || "black",
+            figure.lineWidth || 1
+          );
+          break;
+        case "circle": // Добавляем обработку для круга
+          Circle.staticDraw(
+            ctx,
+            figure.x || 0,
+            figure.y || 0,
+            figure.r || 0,
             figure.color || "black",
             figure.strokeColor || "black",
             figure.lineWidth || 1

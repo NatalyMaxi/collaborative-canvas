@@ -4,8 +4,7 @@ export class Circle extends Tool {
   mouseDown: boolean;
   startX: number;
   startY: number;
-  width: number;
-  height: number;
+  radius: number; // Изменили width/height на radius
   saved: string;
 
   constructor(canvas: HTMLCanvasElement, socket: WebSocket, id: string) {
@@ -13,12 +12,10 @@ export class Circle extends Tool {
     this.mouseDown = false;
     this.startX = 0;
     this.startY = 0;
-    this.width = 0;
-    this.height = 0;
+    this.radius = 0;
     this.saved = "";
     this.listen();
   }
-
 
   listen() {
     this.canvas.onmousemove = this.mouseMoveHandler;
@@ -33,7 +30,13 @@ export class Circle extends Tool {
         method: "draw",
         id: this.id,
         figure: {
-          type: "finish",
+          type: "circle", // Изменили type на "circle"
+          x: this.startX,
+          y: this.startY,
+          r: this.radius,
+          color: this.ctx.fillStyle,
+          strokeColor: this.ctx.strokeStyle,
+          lineWidth: this.ctx.lineWidth,
         },
       })
     );
@@ -53,34 +56,10 @@ export class Circle extends Tool {
       let currentY = e.pageY - (e.target as HTMLCanvasElement).offsetTop;
       let width = currentX - this.startX;
       let height = currentY - this.startY;
-      let r = Math.sqrt(width ** 2 + height ** 2);
-      this.draw(this.startX, this.startY, r);
-      // this.socket.send(
-      //   JSON.stringify({
-      //     method: "draw",
-      //     id: this.id,
-      //     figure: {
-      //       type: "brush",
-      //       x: e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
-      //       y: e.pageY - (e.target as HTMLCanvasElement).offsetTop,
-      //     },
-      //   })
-      // );
+      this.radius = Math.sqrt(width ** 2 + height ** 2);
+      this.draw(this.startX, this.startY, this.radius);
     }
   };
-
-  // draw(x: number, y: number, w: number, h: number) {
-  //   const img = new Image();
-  //   img.src = this.saved;
-  //   img.onload = () => {
-  //     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  //     this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
-  //     this.ctx.beginPath();
-  //     this.ctx.rect(x, y, w, h);
-  //     this.ctx.fill();
-  //     this.ctx.stroke();
-  //   };
-  // }
 
   draw(x: number, y: number, r: number) {
     const img = new Image();
@@ -90,23 +69,27 @@ export class Circle extends Tool {
       this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
       this.ctx.beginPath();
       this.ctx.arc(x, y, r, 0, 2 * Math.PI);
+
       this.ctx.fill();
       this.ctx.stroke();
     };
   }
 
-  // static staticDraw(
-  //   ctx: CanvasRenderingContext2D,
-  //   x: number,
-  //   y: number,
-  //   w: number,
-  //   h: number,
-  //   color: string
-  // ) {
-  //   ctx.fillStyle = color;
-  //   ctx.beginPath();
-  //   ctx.rect(x, y, w, h);
-  //   ctx.fill();
-  //   ctx.stroke();
-  // }
+  static staticDraw(
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    r: number,
+    color: string,
+    strokeColor: string,
+    lineWidth: number
+  ) {
+    ctx.fillStyle = color;
+    ctx.strokeStyle = strokeColor;
+    ctx.lineWidth = lineWidth;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+  }
 }
