@@ -19,7 +19,7 @@ interface IParams {
 interface IDrawMessage {
   method: "draw";
   figure: {
-    type: "brush" | "rect" | "eraser" | "finish" | "circle";
+    type: "brush" | "rect" | "eraser" | "finish" | "circle" | "line";
     x?: number;
     y?: number;
     r?: number;
@@ -28,6 +28,8 @@ interface IDrawMessage {
     color?: string;
     strokeColor?: string;
     lineWidth?: number;
+    startX?: number;
+    startY?: number;
   };
 }
 
@@ -72,55 +74,64 @@ const CanvasComponent = () => {
     }
   };
 
-  const drawHandler = (msg: IDrawMessage) => {
-    const figure = msg.figure;
-    const ctx = canvasRef.current?.getContext("2d");
+const drawHandler = (msg: IDrawMessage) => {
+  const figure = msg.figure;
+  const canvas = canvasRef.current;
+  const ctx = canvas?.getContext("2d");
 
-    if (ctx) {
-      switch (figure.type) {
-        case "brush":
-          Brush.draw(
-            ctx,
-            figure.x || 0,
-            figure.y || 0,
-            figure.color || "black",
-            figure.lineWidth || 1
-          );
-          break;
-        case "rect":
-          Rect.staticDraw(
-            ctx,
-            figure.x || 0,
-            figure.y || 0,
-            figure.width || 0,
-            figure.height || 0,
-            figure.color || "black",
-            figure.strokeColor || "black",
-            figure.lineWidth || 1
-          );
-          break;
-        case "circle":
-          Circle.staticDraw(
-            ctx,
-            figure.x || 0,
-            figure.y || 0,
-            figure.r || 0,
-            figure.color || "black",
-            figure.strokeColor || "black",
-            figure.lineWidth || 1
-          );
-          break;
-        case "eraser":
-          Eraser.draw(ctx, figure.x || 0, figure.y || 0);
-          break;
-        case "finish":
-          ctx.beginPath();
-          break;
-        default:
-          console.warn("Неизвестный тип фигуры:", figure.type);
-      }
+  if (ctx && canvas) {
+    switch (figure.type) {
+      case "brush":
+        Brush.draw(
+          ctx,
+          figure.x || 0,
+          figure.y || 0,
+          figure.color || "black",
+          figure.lineWidth || 1
+        );
+        break;
+      case "rect":
+        Rect.staticDraw(
+          ctx,
+          figure.x || 0,
+          figure.y || 0,
+          figure.width || 0,
+          figure.height || 0,
+          figure.color || "black",
+          figure.strokeColor || "black",
+          figure.lineWidth || 1
+        );
+        break;
+      case "circle":
+        Circle.staticDraw(
+          ctx,
+          figure.x || 0,
+          figure.y || 0,
+          figure.r || 0,
+          figure.color || "black",
+          figure.strokeColor || "black",
+          figure.lineWidth || 1
+        );
+        break;
+      case "eraser":
+        Eraser.draw(ctx, figure.x || 0, figure.y || 0);
+        break;
+      case "line":
+        ctx.strokeStyle = figure.color || "black";
+        ctx.lineWidth = figure.lineWidth || 1;
+        ctx.beginPath();
+        ctx.moveTo(figure.startX || 0, figure.startY || 0);
+        ctx.lineTo(figure.x || 0, figure.y || 0);
+        ctx.stroke();
+        break;
+      case "finish":
+        ctx.beginPath();
+        break;
+      default:
+        console.warn("Неизвестный тип фигуры:", figure.type);
     }
-  };
+  }
+};
 
   useEffect(() => {
     if (canvasState.username) {

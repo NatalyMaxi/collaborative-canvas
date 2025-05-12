@@ -1,8 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { Tool } from "src/tools/Tool";
 
-class ToolState {
+export class ToolState {
   tool: Tool | null = null;
+  fillColor: string = "black";
+  strokeColor: string = "black";
+  lineWidth: number = 1; // Добавляем свойство lineWidth
 
   constructor() {
     makeAutoObservable(this);
@@ -13,18 +16,21 @@ class ToolState {
   }
 
   setFillColor(color: string) {
+    this.fillColor = color;
     if (this.tool) {
       this.tool.fillColor = color;
     }
   }
 
   setStrokeColor(color: string) {
+    this.strokeColor = color;
     if (this.tool) {
       this.tool.strokeColor = color;
     }
   }
 
   setLineWidth(width: number) {
+    this.lineWidth = width;
     if (this.tool) {
       this.tool.lineWidth = width;
     }
