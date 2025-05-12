@@ -1,3 +1,4 @@
+import canvasState from "src/store/canvasState";
 import { Tool } from "./Tool";
 
 export class Rect extends Tool {
@@ -47,6 +48,8 @@ export class Rect extends Tool {
 
   mouseDownHandler = (e: MouseEvent) => {
     this.mouseDown = true;
+    canvasState.pushToUndo(this.canvas.toDataURL());
+
     this.ctx.beginPath();
     this.startX = e.pageX - (e.target as HTMLCanvasElement).offsetLeft;
     this.startY = e.pageY - (e.target as HTMLCanvasElement).offsetTop;

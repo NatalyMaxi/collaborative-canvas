@@ -1,3 +1,4 @@
+import canvasState from "src/store/canvasState";
 import { Tool } from "./Tool";
 import toolState from "src/store/toolState";
 
@@ -47,6 +48,7 @@ export class Line extends Tool {
 
   mouseDownHandler = (e: MouseEvent) => {
     this.mouseDown = true;
+    canvasState.pushToUndo(this.canvas.toDataURL());
     this.startX = e.pageX - (e.target as HTMLCanvasElement).offsetLeft;
     this.startY = e.pageY - (e.target as HTMLCanvasElement).offsetTop;
     this.saved = this.canvas.toDataURL();

@@ -50,22 +50,21 @@ const CanvasComponent = () => {
     }
   }, [id]);
 
-  const mouseUpHandler = () => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      canvasState.pushToUndo(canvas.toDataURL());
-      axios
-        .post(`http://localhost:5000/image?id=${params.id}`, {
-          img: canvas.toDataURL(),
-        })
-        .then(response => console.log(response.data))
-        .catch(error =>
-          console.error("Ошибка при отправке изображения:", error)
-        );
-    } else {
-      console.warn("Canvas не инициализирован. Невозможно выполнить действие.");
-    }
-  };
+const mouseUpHandler = () => {
+  const canvas = canvasRef.current;
+  if (canvas) {
+    axios
+      .post(`http://localhost:5000/image?id=${params.id}`, {
+        img: canvas.toDataURL(),
+      })
+      .then(response => console.log(response.data))
+      .catch(error =>
+        console.error("Ошибка при отправке изображения:", error)
+      );
+  } else {
+    console.warn("Canvas не инициализирован. Невозможно выполнить действие.");
+  }
+};
 
   const connectHandler = () => {
     if (usernameRef?.current?.value) {

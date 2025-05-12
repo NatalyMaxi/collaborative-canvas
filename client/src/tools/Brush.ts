@@ -1,3 +1,4 @@
+import canvasState from "src/store/canvasState";
 import { Tool } from "./Tool";
 
 export class Brush extends Tool {
@@ -30,6 +31,7 @@ export class Brush extends Tool {
 
   mouseDownHandler = (e: MouseEvent) => {
     this.mouseDown = true;
+    canvasState.pushToUndo(this.canvas.toDataURL());
     this.ctx.beginPath();
     this.ctx.moveTo(
       e.pageX - (e.target as HTMLCanvasElement).offsetLeft,
